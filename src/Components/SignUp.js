@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import { useRef } from 'react';
+import axios  from 'axios'
 import './SignUp.css'
 const WEB_API='AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o';
 const url=`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${WEB_API}`
@@ -43,6 +43,10 @@ const SignUp =()=>{
     }
   });
     }
+
+    const emailChangeHandler=(e)=>{
+        setEmail(e.target.value)
+    }
        
     const passwordHandler=(e)=>{
         setPassword(e.target.value)
@@ -60,17 +64,23 @@ const SignUp =()=>{
                 
                 <div className="input-group">
                          <label htmlFor="email">Email:</label>
-                            <input  type="email" id="email " required valueref={email} ></input>
+                            <input  type="email" id="email "
+                             required valueref={email} 
+                             onChange={emailChangeHandler} ></input>
                     
                 </div>
                 <div className="input-group">
                       <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" required value={password} onChange={passwordHandler}></input>
+                        <input type="password" id="password"
+                         required value={password} 
+                         onChange={passwordHandler}></input>
                     
                 </div>
               <div className="input-group">
                     <label htmlFor="confirmpassword">Confirm Password:</label>
-                    <input type="password" id="confirmpassword" required value={confirmPass} onChange={confirmPassHandler}></input>
+                    <input type="password" id="confirmpassword"
+                     required value={confirmPass}
+                      onChange={confirmPassHandler}></input>
                 </div>
            
          
