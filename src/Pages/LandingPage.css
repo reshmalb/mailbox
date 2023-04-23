@@ -1,0 +1,26 @@
+.landingpage-container{
+    background-color:white;
+    display: flex;
+    height: 100vh;
+}
+.right-section{
+    /* flex: 1; */
+    flex-basis: 40%;
+    border:2px;
+    background-color:white;
+}
+.left-section{
+    /* flex: 1; */
+    flex-basis: 60%;
+    border:2px;
+    background-color:white;
+}
+.left-section h1{
+    justify-content: center;
+    align-items: center;
+}
+/* .middle-section{
+    flex-basis: 70%;
+    border:1px;
+    background-color: rgb(228, 239, 239);
+} */
