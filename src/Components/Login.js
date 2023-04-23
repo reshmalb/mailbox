@@ -1,19 +1,49 @@
 import React,{useState,useRef} from "react";
 import './Login.css'
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+const WEB_API='AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o';
+const url=`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${WEB_API}`;
 
 
 const Login=()=>{
     const emailRef=useRef();
     const passwordRef=useRef();
+    const[error,setError]=useState();
+    const history=useHistory();
 
     const  loginHandler=(event)=>{
         event.preventDefault();
         const email=emailRef.current.value;
         const password=passwordRef.current.value;
-        if(email||password!==''){
-
+        const userData={email:email,password:password,returnSecureToken:true}
+      try{
+        const response=axios.post(url,userData);
+        if(response.status===200){
+            alert("signed in successfully")
+            console.log(response)
+            localStorage.setItem('token',response.data.idToken)
+            history.replace('/dummy')
         }
 
+      }catch(err){
+        if (err.response) {
+            // server responded with an error status code (4xx or 5xx)
+            setError(err.response.data.error.message);
+          } else if (err.request) {
+            // no response received
+            setError("No response received from server. Please try again later.");
+          } else {
+            // request failed due to some other reason
+            setError("Request failed. Please try again later.");
+          }
+
+      }
+
+
+
+
+        
     }
 
 
@@ -34,11 +64,11 @@ const Login=()=>{
             <div className="input-group">
                      <button type="submit"> Login</button>
             </div>             
-             </form>
-             <div className="input-group">
+             </form>       
+             {error && <p>{error}</p>}    
                 <a href="#">Forgot password</a>
                 <p>Don't have an account?<a href="#">SignUp</a></p>
-             </div>         
+       
 
         </div>
        

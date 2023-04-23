@@ -9,7 +9,7 @@ const LandingPage=()=>{
        <div className="landingpage-container">
          <div className="left-section">
         <h1>Mail Box</h1>
-            <SignUp/>
+            {/* <SignUp/> */}
         </div>       
       
         <div className="middle-section">         
@@ -19,7 +19,7 @@ const LandingPage=()=>{
        
        <div className="right-section">
         
-                      {/* <Login/> */}
+                      <Login/>
         </div>
 
        </div>
