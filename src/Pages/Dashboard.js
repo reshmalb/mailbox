@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Dashboard.css'
+import ComposeMail from '../Components/ComposeMail';
+import Inbox from '../Components/Inbox';
 
 function Sidebar() {
   return (
@@ -56,7 +58,7 @@ function MainContent() {
   return (
     <div className="main-content">
       <h2>Inbox</h2>
-      {messages.map(message => (
+       {messages.map(message => (
         <Message
           key={message.id}
           title={message.title}
@@ -70,10 +72,36 @@ function MainContent() {
 }
 
 function Dashboard() {
+  const [isComposeMail,setComposeMail]=useState(false);
+  const [isInbox,setInbox]=useState(false)
+  const composeMailHandler=()=>{
+    setComposeMail(true)
+    setInbox(false)
+  }
+  const inboxHandler=()=>{
+    setInbox(true)
+    setComposeMail(false)
+
+  }
+
   return (
   <div className="container">
-      <Sidebar />
-      <MainContent />
+     <div className="sidebar"><ul>
+        <li ><button onClick={inboxHandler} >Inbox </button></li>
+        <li>Sent</li>
+        <li>Drafts</li>
+        <li>Spam</li>
+        <li>Trash</li>
+      </ul>
+      <button onClick={composeMailHandler}>Compose Mail</button>
+     </div>
+     <div className="main-content">
+
+    {isComposeMail && <ComposeMail/>}
+    {isInbox && <Inbox/>}
+     </div>
+
+ 
     </div>
   );
 }

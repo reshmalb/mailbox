@@ -12,18 +12,26 @@ const Login=()=>{
     const[error,setError]=useState();
     const history=useHistory();
 
-    const  loginHandler=(event)=>{
+    const  loginHandler=async(event)=>{
         event.preventDefault();
         const email=emailRef.current.value;
         const password=passwordRef.current.value;
-        const userData={email:email,password:password,returnSecureToken:true}
+        const userData={
+            email:email,
+            password:password,
+            returnSecureToken:true}
       try{
-        const response=axios.post(url,userData);
+        const response= await axios.post(url,userData);
+        console.log("response",response)
+        console.log("data",response.data)
+        console.log("status",response.status)
+
+
         if(response.status===200){
             alert("signed in successfully")
-            console.log(response)
             localStorage.setItem('token',response.data.idToken)
-            history.replace('/dummy')
+            localStorage.setItem('email',email)
+            history.replace('/dashboard')
         }
 
       }catch(err){
