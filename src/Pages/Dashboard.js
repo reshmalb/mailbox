@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import './Dashboard.css'
-import ComposeMail from '../Components/ComposeMail';
 import Inbox from '../Components/Inbox';
 import Header from './Layout/Header';
 import { ListGroup} from 'react-bootstrap';
@@ -8,6 +7,7 @@ import { Container } from 'react-bootstrap';
 import {useSelector,useDispatch} from 'react-redux'
 import { fetchMailBox } from './Store/DataActions';
 import NewMail from '../Components/NewMail';
+import Viewinbox from '../Components/Viewinbox';
 
 
 function Dashboard() {
@@ -39,7 +39,7 @@ function Dashboard() {
   }
   const inboxHandler=()=>{
     setInbox(true)
-    setComposeMail(false)
+    setShowOverlay(false)
 
   }
   const sentItemsHandler=()=>{
@@ -60,6 +60,8 @@ function Dashboard() {
            marginBottom:"10px",
            marginLeft:"1px",
           flexBasis:'20%',
+          backgroundColor:"whitesmoke",
+          height:"100vh",maxWidth:"300px"
        }}
            >
 
@@ -116,14 +118,19 @@ function Dashboard() {
            marginBottom:"10px",
            marginRight:"1px",
           flexBasis:'80%',
-          border:'1px'
+          border:'1px',
+          marginLeft:"auto",
+          marginTop:"5px",
+          borderRadius:"20px",
+          backgroundColor:"whitesmoke"
+          
        }}
        >
-              <div className="main-content">
+             
 
                 {showOverlay && (<NewMail onClose={() => setShowOverlay(false)} />)}
-                  {/* {isInbox && <Inbox/>} */}
-              </div>
+                  {isInbox && <Viewinbox/>}
+
 
        </Container>
       </main>

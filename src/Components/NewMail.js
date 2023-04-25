@@ -32,6 +32,8 @@ const NewMail = ({ onClose }) => {
       onHide={onClose}
       placement="bottom"
       transition={false}
+      position="fixed"
+      
     >
       {({ placement, arrowProps, show: _show, popper, ...props }) => (
         <div
@@ -42,13 +44,17 @@ const NewMail = ({ onClose }) => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             zIndex: 9999,
+            height: '300px',
+            marginTop:"5px"
           }}
-        > <Form>
+        > 
+          
+        <Form>
         <Form.Group controlId="sentTo">
           <Form.Label>Sent To</Form.Label>
           <Form.Control type="email"
            placeholder="Enter email" 
-           value={emailTo}
+           value={email}
            onChange={emailHandler}/>
         </Form.Group>
         <Form.Group controlId="subject">
@@ -65,15 +71,20 @@ const NewMail = ({ onClose }) => {
             inline: { inDropdown: true },
             list: { inDropdown: true },
             textAlign: { inDropdown: true },
+            
           }}
+          
           
           onEditorStateChange={handleEditorChange}
            />
+        
           <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={submitHandler}>Send</Button>
+          <Button   onClick={submitHandler}>Send</Button>
+          
         </div>
       )}
-    </OverlayTrigger>
+      </OverlayTrigger>
+
   );
 };
 
