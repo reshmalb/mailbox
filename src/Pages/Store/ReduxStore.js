@@ -1,13 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import ExpenseReducer  from './ExpenseStore'
 import AuthorizationReducer  from './AuthStore'
-import ThemeReducer from './ThemeReducer'
+import MailBoxReducer from './MailBoxStore'
 
 const store=configureStore({
-    reducer:{expense:ExpenseReducer,
+    reducer:{mailbox:MailBoxReducer,
               author: AuthorizationReducer,
-              toggletheme:ThemeReducer,
+              
             }  
 });
 

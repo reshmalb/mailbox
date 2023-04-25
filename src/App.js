@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
-
 import { Fragment } from 'react';
-import LandingPage from './Pages/LandingPage';
 import { Route } from 'react-router-dom';
-import DummyScreen from './Pages/DummyPage';
-import ComposeMail from './Components/ComposeMail';
 import Dashboard from './Pages/Dashboard';
+import { Container,Row,Col } from 'react-bootstrap';
+import Login from './Components/Login';
+import { useSelector } from 'react-redux';
+
+
+
 
 
 function App() {
 
-    const isLogin=localStorage.getItem('token')
+    const isLogin=useSelector((state)=>state.authoe.isAuthenticated)
+   
+       
   return (
     <Fragment>
-      {/* <LandingPage/> */}
-      {/* <Route path='/dummy'><DummyScreen/></Route> */}
+       <Container 
+        style={{ backgroundClip :"offwhite",
+                display: "flex",
+             height:"100vh"}}>
+              <Container style={{flexBasis:" 60%",
+                           border:"2px",
+                            backgroundColor:"white",
+                            marginLeft:0,padding:0}}>
+                              <h1 style={{marginTop:"4rem",color:"purple"}}>Mail Box</h1>
+
+              </Container>
+              <Container style={{flexBasis:" 40%",
+                           border:"2px",
+                            backgroundColor:"white"}}>
+                               
+                               <Login/>
+              </Container>
+        
+        </Container>
+
+  
+     
       {isLogin &&<Route path='/dashboard'><Dashboard/></Route>}
-      {!isLogin&& <LandingPage/>}
       
+    
       </Fragment>
     
 

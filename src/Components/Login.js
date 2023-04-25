@@ -4,6 +4,8 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 const WEB_API='AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o';
 const url=`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${WEB_API}`;
+import { authActions } from "../Pages/Store/AuthStore";
+import { useDispatch } from "react-redux";
 
 
 const Login=()=>{
@@ -11,6 +13,8 @@ const Login=()=>{
     const passwordRef=useRef();
     const[error,setError]=useState();
     const history=useHistory();
+    const dispatch=useDispatch();
+    
 
     const  loginHandler=async(event)=>{
         event.preventDefault();
@@ -31,6 +35,7 @@ const Login=()=>{
             alert("signed in successfully")
             localStorage.setItem('token',response.data.idToken)
             localStorage.setItem('email',email)
+            dispatch(authActions.login({token:response.data.idToken,email:email}))
             history.replace('/dashboard')
         }
 

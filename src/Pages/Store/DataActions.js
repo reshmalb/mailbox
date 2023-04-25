@@ -1,111 +1,135 @@
 import axios from 'axios'
 
 import { authActions } from './AuthStore'
-import { expenseActions } from "./ExpenseStore";
-
-export const  loginRequest=(user)=>{
-    return async(dispatch)=>{
-        const loginData=async()=>{
-            const response=await axios.post(
-                'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o',{
-                    email:user.email,
-                    password:user.password,
-                    returnSecureToken:true,
-                })
-                if(!response.statusText==='OK'){
-                    throw new Error("Authentication failed")
-                }
-                else{
-                    return response;
-                }
+import { mailBoxAction } from './MailBoxStore'
+// export const  loginRequest=(user)=>{
+//     return async(dispatch)=>{
+//         const loginData=async()=>{
+//             const response=await axios.post(
+//                 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o',{
+//                     email:user.email,
+//                     password:user.password,
+//                     returnSecureToken:true,
+//                 })
+//                 if(!response.statusText==='OK'){
+//                     throw new Error("Authentication failed")
+//                 }
+//                 else{
+//                     return response;
+//                 }
 
               
-        }
+//         }
 
-        try{
-        const responseData=await loginData()
-        console.log("login",responseData)
-          dispatch(authActions.login({token:responseData.data.idToken,email:responseData.data.email}))
-        }
-        catch(error){
-          console.log(error.message)
-        }
-    }
-}
+//         try{
+//         const responseData=await loginData()
+//         console.log("login",responseData)
+//           dispatch(authActions.login({token:responseData.data.idToken,email:responseData.data.email}))
+//         }
+//         catch(error){
+//           console.log(error.message)
+//         }
+//     }
+// }
 
 
-export const  SignupRequest=async (user)=>{
+// export const  SignupRequest=async (user)=>{
     
-            try{
-                const response=await axios.post(
-                    'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o',{
-                        email:user.email,
-                        password:user.password,
-                        returnSecureToken:true,
-                    })
-                    if(!response.statusText==='OK'){
-                        throw new Error("Sign up Failed")
-                    }
-                    else{
-                        return response;
-                    }
+//             try{
+//                 const response=await axios.post(
+//                     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o',{
+//                         email:user.email,
+//                         password:user.password,
+//                         returnSecureToken:true,
+//                     })
+//                     if(!response.statusText==='OK'){
+//                         throw new Error("Sign up Failed")
+//                     }
+//                     else{
+//                         return response;
+//                     }
     
                   
-            } catch(error){
-            console.log(error.message)
-              }
+//             } catch(error){
+//             console.log(error.message)
+//               }
             
-        }
+//         }
 
-  export const sendExpenseData=(expense,email)=>{
+  export const sendMailData= async(newMail,email)=>{
             return async(dispatch)=>{     
                  const  sendRequest=async() =>{
-                    const response=await axios.put(`https://fir-login-aea12-default-rtdb.firebaseio.com/expenses/${email}.json`,
-                    {
-                    expensedetails:expense.expensedetails,
-                     
-                    })
+                const response=await axios.post(`https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${email}/inbox.json`,
+
+                   email );
         
                     if(!response.statusText==='OK'){
                         throw new Error('Sending data failed')
                     }
+                    else 
+                    return  response.data;
         
                    }
         
-                   try{
-                      await sendRequest();                     
+                  try{
+                     const responseData= await sendRequest(); 
+                     dispatch(mailBoxAction.sentMail({
+                        sentItems:{
+                            sendTo:email,
+                            subject:newMail.subject,
+                            content:newMail.content,
+                        }
+                     }))                    
                      
                    }catch(error){
                     alert("error ")
                    }      
              }
          }    
-   export const fetchData=(email)=>{
+   export const fetchMailBox=async(email)=>{
             return async(dispatch)=>{
-                const fetchExistexpenseData=async()=>{
+                const  getMailboxData=async()=>{
         
                   console.log("email",email);
-                    const response=await axios.get(`https://fir-login-aea12-default-rtdb.firebaseio.com/expenses/${email}.json`)
-                            if(response.statusText!=='OK') {
-                                throw new Error('Fetching expense data failed...')
+                    const response=await axios.get(`https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${email}.json`)
+                            if(response.status!==200) {
+                                throw new Error('Fetching mailbox data failed...')
                             }  
                     const data=response.data;   
-                    console.log("expense data",response) 
+                    console.log("mailbox data",response) 
                     return data;    
                     
                 }
                 try{
-                   const expenseData= await fetchExistexpenseData()
-                   console.log("expense data",expenseData.expensedetails) 
+                   const mailboxData= await getMailboxData()
+                   console.log("mailbox data2",mailboxData.mailboxDetails) 
 
-                   dispatch(expenseActions.replaceExpense({
-                    expensedetails:expenseData.expensedetails||[],
+                   dispatch(mailBoxAction.replaceMailbox({
+                    inbox:mailboxData.inbox||[],
+                    sentItems:mailboxData.sentItems||[],
+                    drafts:mailboxData.drafts||[],
         
                    }))
                 }catch(error){
                     console.log(error.message);
                 }
 
+            }
+        }
+        export const updateMailBox=(mailbox,email)=>{
+            return async()=>{
+                try{
+                const response=
+                await axios.put(`https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${email}.json`,
+                       mailbox);
+                       if(response.status===200){
+                        alert("mailbox updated successfully")
+                       }
+
+
+                }catch(error){
+                    alert(error.message)
+                }
             }
         }
 
