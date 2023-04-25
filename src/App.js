@@ -4,6 +4,7 @@ import Dashboard from './Pages/Dashboard';
 import { Container,Row,Col } from 'react-bootstrap';
 import Login from './Components/Login';
 import { useSelector } from 'react-redux';
+import Viewinbox from './Components/Viewinbox';
 
 
 
@@ -11,12 +12,19 @@ import { useSelector } from 'react-redux';
 
 function App() {
 
-    const isLogin=useSelector((state)=>state.authoe.isAuthenticated)
-   
+  const isLogin=useSelector((state)=>state.author.isAuthenticated)
+  console.log("islogin",isLogin);
        
   return (
     <Fragment>
-       <Container 
+    <main>  
+      {/* <Viewinbox/> */}
+      {isLogin  &&  <Route path='/dashboard' exact><Dashboard/> </Route> }
+
+      {!isLogin && <Login/>}     
+
+    </main>
+       {/* <Container 
         style={{ backgroundClip :"offwhite",
                 display: "flex",
              height:"100vh"}}>
@@ -31,16 +39,16 @@ function App() {
                            border:"2px",
                             backgroundColor:"white"}}>
                                
-                               <Login/>
+                            {!isLogin &&   <Login/>}
               </Container>
         
         </Container>
 
   
      
-      {isLogin &&<Route path='/dashboard'><Dashboard/></Route>}
+      {isLogin && <Route path='/dashboard'> <Dashboard/> </Route>}
       
-    
+     */}
       </Fragment>
     
 

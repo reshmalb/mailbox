@@ -1,6 +1,7 @@
 import {createSlice}  from '@reduxjs/toolkit'
 
 const mailBoxSlice=createSlice({
+    name:'mailbox',
     initialState:{
              emailId:null,
              mailBox:[],//inbox,sentItems,Drafts

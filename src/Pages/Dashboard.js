@@ -7,6 +7,7 @@ import { ListGroup} from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
 import {useSelector,useDispatch} from 'react-redux'
 import { fetchMailBox } from './Store/DataActions';
+import NewMail from '../Components/NewMail';
 
 
 function Dashboard() {
@@ -14,22 +15,27 @@ function Dashboard() {
   const [isInbox,setInbox]=useState(false)
   const mailboxData=useSelector((state)=>state.mailbox.mailbBox)
   const dispatch=useDispatch();
-
+  const email=useSelector((state)=>state.author.email)
+  const newmail=email.replaceAll('.','')
+  const [showOverlay, setShowOverlay] = useState(false);
   useEffect(()=>{
-    dispatch(fetchMailBox());
+
+    dispatch(fetchMailBox(newmail));
+    
   },[dispatch])
 
 
-  useEffect(()=>{
-    dispatch(fetchMailBox())
-  },[mailboxData,dispatch])
+  // useEffect(()=>{
+  //   dispatch(fetchMailBox())
+  // },[mailboxData,dispatch])
   
  
 
 
   const composeMailHandler=()=>{
-    setComposeMail(true)
-    setInbox(false)
+    setShowOverlay(true);
+    // setComposeMail(true)
+    // setInbox(false)
   }
   const inboxHandler=()=>{
     setInbox(true)
@@ -50,7 +56,7 @@ function Dashboard() {
     <Fragment>
       <Header/>
       <main>
-      <Container  style={{displsy:"flex",      
+      <Container  style={{display:"flex",      
            marginBottom:"10px",
            marginLeft:"1px",
           flexBasis:'20%',
@@ -115,8 +121,8 @@ function Dashboard() {
        >
               <div className="main-content">
 
-                {isComposeMail && <ComposeMail/>}
-                  {isInbox && <Inbox/>}
+                {showOverlay && (<NewMail onClose={() => setShowOverlay(false)} />)}
+                  {/* {isInbox && <Inbox/>} */}
               </div>
 
        </Container>

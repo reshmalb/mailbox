@@ -14,8 +14,8 @@ const authSlice = createSlice({
             state.isAuthenticated=true;
             state.token=action.payload.token;
             state.email=action.payload.email;
-            localStorage.setItem('email',email)
-            localStorage.setItem('token',token)
+            // localStorage.setItem('email',email)
+            // localStorage.setItem('token',token)
            
             // console.log("token",state.token)
             // console.log("userid",state.userId);

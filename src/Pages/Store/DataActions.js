@@ -2,36 +2,41 @@ import axios from 'axios'
 
 import { authActions } from './AuthStore'
 import { mailBoxAction } from './MailBoxStore'
-// export const  loginRequest=(user)=>{
-//     return async(dispatch)=>{
-//         const loginData=async()=>{
-//             const response=await axios.post(
-//                 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o',{
-//                     email:user.email,
-//                     password:user.password,
-//                     returnSecureToken:true,
-//                 })
-//                 if(!response.statusText==='OK'){
-//                     throw new Error("Authentication failed")
-//                 }
-//                 else{
-//                     return response;
-//                 }
+
+
+
+
+export const  loginRequest=(user)=>{
+    return async(dispatch)=>{
+        const loginData=async()=>{
+        console.log("userData",user)
+
+            const response=await axios.post(
+                'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBmu2iAn2bEUPLR2hBHCQAhknCpMMWjz3o',{
+                    email:user.email,
+                    password:user.password,
+                    returnSecureToken:true,
+                })
+                if(!response.statusText==='OK'){
+                    throw new Error("Authentication failed")
+                }
+                else{
+                    return response;
+                }
 
               
-//         }
+        }
 
-//         try{
-//         const responseData=await loginData()
-//         console.log("login",responseData)
-//           dispatch(authActions.login({token:responseData.data.idToken,email:responseData.data.email}))
-//         }
-//         catch(error){
-//           console.log(error.message)
-//         }
-//     }
-// }
-
+        try{
+         const   responseData=await loginData()
+          console.log("inside login request",responseData)
+           dispatch(authActions.login({token:responseData.data.idToken,email:responseData.data.email}))
+          }
+        catch(error){
+          console.log(error.message)
+        }
+    }
+}
 
 // export const  SignupRequest=async (user)=>{
     
@@ -86,7 +91,7 @@ import { mailBoxAction } from './MailBoxStore'
                    }      
              }
          }    
-   export const fetchMailBox=async(email)=>{
+   export const fetchMailBox=(email)=>{
             return async(dispatch)=>{
                 const  getMailboxData=async()=>{
         
