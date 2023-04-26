@@ -52,93 +52,75 @@ function Dashboard() {
     
   }
 
-  return (
-    <Fragment>
-      <Header/>
-      <main>
-      <Container  style={{display:"flex",      
-           marginBottom:"10px",
-           marginLeft:"1px",
-          flexBasis:'20%',
-          backgroundColor:"whitesmoke",
-          height:"100vh",maxWidth:"300px"
-       }}
-           >
-
-    
-      <ListGroup ListGroup className="horizontal-sm" 
-      style={{display: 'flex', 
-      justifyContent: 'flex-start',
-       width: '200px',
-       height:'100%',
-       marginTop:'3rem',
-       border:"none",
-       marginLeft:"1px"}}>   
-
-      <ListGroup.Item action variant="light" onClick={composeMailHandler}>+Create New Mail
-      </ListGroup.Item>
-      <ListGroup.Item action variant="light" onClick={inboxHandler}>Inbox
-       <span className='justify-content-end'>10</span>
-      </ListGroup.Item>
-      <ListGroup.Item action variant="light" onClick={sentItemsHandler}>Sent
-      </ListGroup.Item>
-      <ListGroup.Item action variant="light" onClick={draftHandler} >Drafts
-      </ListGroup.Item>
-      <ListGroup.Item action variant="light" onClick={trashHandler}>Trash
-      </ListGroup.Item>
-    
-    
-    
-    </ListGroup>
  
-
-
-
-
-
-
-      {/* <div className="container">
-     <div className="sidebar"><ul>
-        <li ><button onClick={inboxHandler} >Inbox </button></li>
-        <li>Sent</li>
-        <li>Drafts</li>
-        <li>Spam</li>
-        <li>Trash</li>
-      </ul> */}
-
-
+    return (
+      <>
+        <Header />
+        <div style={{ display: 'flex' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginBottom: '10px',
+              marginLeft: '1px',
+              flexBasis: '20%',
+              backgroundColor: 'whitesmoke',
+              height: '100vh',
+              maxWidth: '300px',
+            }}
+          >
+            <ListGroup
+              className="horizontal-sm"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+                height: '100%',
+                marginTop: '4rem',
+                border: 'none',
+                marginLeft: '1px',
+              }}
+            >
+              <ListGroup.Item action variant="light" onClick={composeMailHandler}>
+                +Create New Mail
+              </ListGroup.Item>
+              <ListGroup.Item action variant="light" onClick={inboxHandler}>
+                Inbox
+                <span className="justify-content-end">10</span>
+              </ListGroup.Item>
+              <ListGroup.Item action variant="light" onClick={sentItemsHandler}>
+                Sent
+              </ListGroup.Item>
+              <ListGroup.Item action variant="light" onClick={draftHandler}>
+                Drafts
+              </ListGroup.Item>
+              <ListGroup.Item action variant="light" onClick={trashHandler}>
+                Trash
+              </ListGroup.Item>
+            </ListGroup>
+          </div>
     
-     {/* </div> */}
-   
-   
-{/*  
-    </div> */}
-     </Container>
-     <Container  style={{displsy:"flex",      
-           marginBottom:"10px",
-           marginRight:"1px",
-          flexBasis:'80%',
-          border:'1px',
-          marginLeft:"auto",
-          marginTop:"5px",
-          borderRadius:"20px",
-          backgroundColor:"whitesmoke"
-          
-       }}
-       >
-             
-
-                {showOverlay && (<NewMail onClose={() => setShowOverlay(false)} />)}
-                  {isInbox && <Viewinbox/>}
-
-
-       </Container>
-      </main>
-      
-    </Fragment>
+          <div
+            style={{
+              display: 'flex',
+              marginRight: '1px',
+              border: '1px',
+              marginLeft: '2rem',
+              marginTop:0,
+            
+              borderRadius: '20px',
+              backgroundColor: 'whitesmoke',
+              width:"100%"
+            }}
+          >
+            {showOverlay && <NewMail onClose={() => setShowOverlay(false)} />}
+            {isInbox && <Inbox />}
+          </div>
+        </div>
+      </>
+    );
     
-  
-  );
+
 }
 
 export default Dashboard;

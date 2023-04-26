@@ -61,23 +61,29 @@ export const  loginRequest=(user)=>{
             
 //         }
 
-  export const sendMailData= async(newMail,email)=>{
+  export const sendMailData= (newMail,email)=>{
+            console.log("inside apicall")
             return async(dispatch)=>{     
                  const  sendRequest=async() =>{
-                const response=await axios.post(`https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${email}/inbox.json`,
-
-                   email );
+                const response=await axios.post(
+                    `https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${email}/inbox.json`,newMail);
+                   
         
                     if(!response.statusText==='OK'){
                         throw new Error('Sending data failed')
                     }
                     else 
-                    return  response.data;
+                    return  response;
         
                    }
         
                   try{
                      const responseData= await sendRequest(); 
+                       if(responseData.status===200){
+                        alert("email send successfully")
+                       }
+                       console.log("rcvd responses after sending mail")
+                     
                      dispatch(mailBoxAction.sentMail({
                         sentItems:{
                             sendTo:email,
@@ -85,6 +91,7 @@ export const  loginRequest=(user)=>{
                             content:newMail.content,
                         }
                      }))                    
+            console.log("updating sentitems")
                      
                    }catch(error){
                     alert("error ")

@@ -3,26 +3,30 @@ import { OverlayTrigger, Overlay, Button,Form } from 'react-bootstrap';
 import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
+import { sendMailData } from '../Pages/Store/DataActions';
 
 const NewMail = ({ onClose }) => {
-  const userMail=useSelector((state)=>state.author.email)  
+  const sender=useSelector((state)=>state.author.email)  
   const [showOverlay, setShowOverlay] = useState(false);
   const handleOverlay = () => setShowOverlay(!showOverlay);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [email,setEmail]=useState();
   const [subject,setSubject]=useState();
+  const dispatch=useDispatch();
 
   const handleEditorChange = (state) => setEditorState(state);
   const emailHandler=(e)=>setEmail(e.targret.value);
   const subjectHandler=(e)=>setSubject(e.targret.value);
   const submitHandler=()=>{
     const mail={
-          sentFrom:userMail,
+          sentFrom:sender,
           subject:subject,
           content:editorState,
     }
-    const toEmail=email.replaceAll('.','')
+    const reciever=email.replaceAll('.','')
+    dispatch(sendMailData(mail,reciever))
+
   }
 
 
