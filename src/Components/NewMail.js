@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { OverlayTrigger, Overlay, Button,Form } from 'react-bootstrap';
-import { EditorState } from 'draft-js';
+import { EditorState,convertToRaw  } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { useSelector,useDispatch } from 'react-redux';
@@ -11,21 +11,33 @@ const NewMail = ({ onClose }) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const handleOverlay = () => setShowOverlay(!showOverlay);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [email,setEmail]=useState();
-  const [subject,setSubject]=useState();
+  const [content,setContent]=useState('');
+  const [email,setEmail]=useState('');
+  const [subject,setSubject]=useState('');
   const dispatch=useDispatch();
 
-  const handleEditorChange = (state) => setEditorState(state);
-  const emailHandler=(e)=>setEmail(e.targret.value);
-  const subjectHandler=(e)=>setSubject(e.targret.value);
+  const handleEditorChange = (state) =>{
+       setEditorState(state);
+       const contentState = editorState.getCurrentContent();
+       const plainText = contentState.getPlainText();
+       console.log(plainText);
+       setContent(plainText)
+  }
+  const emailHandler=(e)=>{
+    setEmail(e.target.value);
+  }
+  const subjectHandler=(e)=>{
+    setSubject(e.target.value);
+  }
+ 
   const submitHandler=()=>{
     const mail={
           sentFrom:sender,
           subject:subject,
-          content:editorState,
+          content:content,
     }
-    const reciever=email.replaceAll('.','')
-    dispatch(sendMailData(mail,reciever))
+   
+    dispatch(sendMailData(mail,email))
 
   }
 
@@ -65,7 +77,7 @@ const NewMail = ({ onClose }) => {
           <Form.Label>Subject</Form.Label>
           <Form.Control type="text"
            placeholder="Enter subject"
-           valur={subject}  
+           value={subject}  
            onChange={subjectHandler}/>
         </Form.Group>
       </Form>
@@ -77,9 +89,9 @@ const NewMail = ({ onClose }) => {
             textAlign: { inDropdown: true },
             
           }}
-          
-          
+       
           onEditorStateChange={handleEditorChange}
+        
            />
         
           <Button onClick={onClose}>Cancel</Button>

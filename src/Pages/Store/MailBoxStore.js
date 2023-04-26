@@ -4,7 +4,12 @@ const mailBoxSlice=createSlice({
     name:'mailbox',
     initialState:{
              emailId:null,
-             mailBox:[],//inbox,sentItems,Drafts
+             mailBox: {
+                inbox: [],
+                sentItems: [],
+                drafts: []
+              }
+             //inbox,sentItems,Drafts
     },
     reducers:{
                 sentMail(state,action){
@@ -13,15 +18,16 @@ const mailBoxSlice=createSlice({
                      state.mailBox.sentItems.push(newMailItem);                 
 
                 },
-               replaceMailBox(state,action){
-                state.emailId=localStorage.getItem('email')
-                state.mailBox.inbox.push(action.payload.inbox)
-                state.mailBox.sentItems.push(action.mailBox.sentItems)
-                state.mailBox.drafts.push(action.payload.drafts)
+                replaceMailbox(state,action){
+                    state.emailId = localStorage.getItem('email')
+                    state.mailBox.inbox = action.payload.inbox || [];
+                    state.mailBox.sentItems = action.payload.sentItems || [];
+                    state.mailBox.drafts = action.payload.drafts || [];
+                console.log("mailbox inside dataactions",state.mailBox.inbox,state.mailBox.sentItems,state.mailBox.drafts)
                },
              
 
     }
 })
-export const mailBoxAction=mailBoxSlice.reducer;
+export const mailBoxAction=mailBoxSlice.actions;
 export default mailBoxSlice.reducer;

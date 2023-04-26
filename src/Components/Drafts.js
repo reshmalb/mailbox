@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useSelector,useDispatch } from 'react-redux';
 
-function SentItems() {
+function Drafts() {
   const emails=useSelector((state)=>state.mailbox.mailBox)
   const sent=emails.sentItems||[];
   console.log("inbox",sent)
@@ -48,4 +48,4 @@ function SentItems() {
   );
 }
 
-export default SentItems;
+export default Drafts;

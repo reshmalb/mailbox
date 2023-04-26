@@ -62,15 +62,25 @@ export const  loginRequest=(user)=>{
 //         }
 
   export const sendMailData= (newMail,email)=>{
+    const reciever=email.replaceAll('.','')
             console.log("inside apicall")
             return async(dispatch)=>{     
                  const  sendRequest=async() =>{
                 const response=await axios.post(
-                    `https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${email}/inbox.json`,newMail);
+                    `https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${reciever}/inbox.json`,newMail);
                    
         
                     if(!response.statusText==='OK'){
-                        throw new Error('Sending data failed')
+
+                        const draftresponse=await axios.post(
+                            `https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${newMail.sentFrom}/drafts.json`,newMail);
+                           if(draftresponse.status===200){
+                            alert("drafts saved successfully")
+                           }
+
+
+                        throw new Error('Sending data failed');                        
+                        
                     }
                     else 
                     return  response;
@@ -81,70 +91,81 @@ export const  loginRequest=(user)=>{
                      const responseData= await sendRequest(); 
                        if(responseData.status===200){
                         alert("email send successfully")
+                        //for updating sentitems in firebase
+                        try{
+                          const sender=newMail.sentFrom.replaceAll('.','')
+                          
+                          const sentData={
+                                   sentTo:email,
+                                   subject:newMail.subject,
+                                   content:newMail.content
+                          }         
+                         const sentresponse=await axios.post(
+                                `https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${sender}/sentitems.json`,
+                                sentData);
+                                if(sentresponse.status===200){
+                                    dispatch(mailBoxAction.sentMail(sentData))               
+
+                                }
+                               
+                               
+                        }catch(error){
+                            console.log("error in uploading sentitems")
+
+                        }
+
+
                        }
                        console.log("rcvd responses after sending mail")
                      
-                     dispatch(mailBoxAction.sentMail({
-                        sentItems:{
-                            sendTo:email,
-                            subject:newMail.subject,
-                            content:newMail.content,
-                        }
-                     }))                    
+                       
             console.log("updating sentitems")
                      
                    }catch(error){
                     alert("error ")
                    }      
              }
+
          }    
    export const fetchMailBox=(email)=>{
             return async(dispatch)=>{
                 const  getMailboxData=async()=>{
         
-                  console.log("email",email);
                     const response=await axios.get(`https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${email}.json`)
                             if(response.status!==200) {
                                 throw new Error('Fetching mailbox data failed...')
                             }  
-                    const data=response.data;   
-                    console.log("mailbox data",response) 
-                    return data;    
+                    //const data=response.data;   
+                    return response;    
                     
                 }
                 try{
-                   const mailboxData= await getMailboxData()
-                   console.log("mailbox data2",mailboxData.mailboxDetails) 
+                   const mailbox= await getMailboxData()
+                   const mailboxData=mailbox.data;
+                   const inboxArray = 'inbox' in mailboxData?
+                    Object.entries(mailboxData.inbox).map(([id, email]) => ({ id, ...email }))
+                    :[];
+                 const  sentItemsArray = 'sentitems' in mailboxData
+                     ? Object.entries(mailboxData.sentitems).map(([id, email]) => ({ id, ...email }))
+                     : [];
 
+                   const draftArray ='drafts' in mailboxData?
+                    Object.entries(mailboxData.draft).map(([id, email]) => ({ id, ...email }))
+                    :[];
+                    
                    dispatch(mailBoxAction.replaceMailbox({
-                    inbox:mailboxData.inbox||[],
-                    sentItems:mailboxData.sentItems||[],
-                    drafts:mailboxData.drafts||[],
-        
+                    inbox:inboxArray,
+                    sentItems:sentItemsArray,
+                    drafts:draftArray        
                    }))
                 }catch(error){
-                    console.log(error.message);
+                    console.log("error inside fetch");
                 }
 
             }
+           
         }
-        export const updateMailBox=(mailbox,email)=>{
-            return async()=>{
-                try{
-                const response=
-                await axios.put(`https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${email}.json`,
-                       mailbox);
-                       if(response.status===200){
-                        alert("mailbox updated successfully")
-                       }
-
-
-                }catch(error){
-                    alert(error.message)
-                }
-            }
-        }
-
+      
         export const deleteData=(id)=>{
             return async()=>{
                 try {

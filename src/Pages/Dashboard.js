@@ -7,25 +7,35 @@ import { Container } from 'react-bootstrap';
 import {useSelector,useDispatch} from 'react-redux'
 import { fetchMailBox } from './Store/DataActions';
 import NewMail from '../Components/NewMail';
-import Viewinbox from '../Components/Viewinbox';
-
+import SentItems from '../Components/SentItems';
+import Drafts from '../Components/Drafts';
+let initailFetch=true;
 
 function Dashboard() {
   const [isComposeMail,setComposeMail]=useState(false);
   const [isInbox,setInbox]=useState(false)
+  const  [isSentItems,setSentItems]=useState(false);
+  const  [isDrafs,setDrafts]=useState(false);
+
+
+
   const mailboxData=useSelector((state)=>state.mailbox.mailbBox)
   const dispatch=useDispatch();
   const email=useSelector((state)=>state.author.email)
   const newmail=email.replaceAll('.','')
   const [showOverlay, setShowOverlay] = useState(false);
   useEffect(()=>{
-
+   
     dispatch(fetchMailBox(newmail));
-    
+   
   },[dispatch])
 
 
   // useEffect(()=>{
+  //   if(initailFetch){
+  //     initailFetch=false;
+  //     return;
+  //   }
   //   dispatch(fetchMailBox())
   // },[mailboxData,dispatch])
   
@@ -40,13 +50,22 @@ function Dashboard() {
   const inboxHandler=()=>{
     setInbox(true)
     setShowOverlay(false)
+    setSentItems(false);
+    setDrafts(false)
 
   }
   const sentItemsHandler=()=>{
+    setSentItems(true);
+    setInbox(false);
+    setShowOverlay(false);
+    setDrafts(false);
 
   }
   const draftHandler=()=>{
-    
+    setInbox(false)
+    setShowOverlay(false)
+    setSentItems(false);
+    setDrafts(true)
   }
   const trashHandler=()=>{
     
@@ -115,6 +134,8 @@ function Dashboard() {
           >
             {showOverlay && <NewMail onClose={() => setShowOverlay(false)} />}
             {isInbox && <Inbox />}
+            {isDrafs&& <Drafts/>}
+            {isSentItems &&<SentItems/>}
           </div>
         </div>
       </>
