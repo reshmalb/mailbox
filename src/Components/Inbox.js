@@ -61,7 +61,7 @@ function Inbox() {
       {inbox.map(email => (
         <ListGroup.Item key={email.id} action onClick={() => handleEmailClick(email)}>
           {!email.isRead && <>
-          <div className="d-flex w-100 justify-content-between" style={{fontWeight:"bold"}}>
+          <div className="d-flex w-100 justify-content-flex-end" style={{fontWeight:"bold"}}>
           <Badge pill variant="danger"
            style={{ position: 'absolute', 
            top: '0px', 
@@ -99,7 +99,7 @@ function Inbox() {
          
           <small >{email.sentFrom}</small>
           </>}
-          <Button className="d-flex w-100 justify-content-between" variant="danger" size="sm" onClick={(event)=> deleteEmailHandler(email.id, event)}>Delete</Button>
+          <Button className="d-flex justify-content-between" variant="danger" size="sm" onClick={(event)=> deleteEmailHandler(email.id, event)}>Delete</Button>
 
          
         </ListGroup.Item>
