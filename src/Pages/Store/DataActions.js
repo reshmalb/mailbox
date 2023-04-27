@@ -168,6 +168,7 @@ export const  loginRequest=(user)=>{
 
    export const updateReadEmails=(id,email,updatedMail)=>{
     const sender=email.replaceAll('.','')
+    console.log(id,email,sender,updatedMail)
        return async(dispatch)=>{
                const updateRead=async()=>{
                     try{

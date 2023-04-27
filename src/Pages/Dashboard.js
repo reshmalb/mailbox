@@ -17,6 +17,7 @@ function Dashboard() {
   const  [isSentItems,setSentItems]=useState(false);
   const  [isDrafs,setDrafts]=useState(false);
   const unread=useSelector((state)=>state.mailbox.unreadEmails)
+  const isChanged=useSelector((state)=>state.mailbox.isChange)
 
 
 
@@ -33,13 +34,16 @@ function Dashboard() {
   },[dispatch])
 
 
-  // useEffect(()=>{
-  //   if(initailFetch){
-  //     initailFetch=false;
-  //     return;
-  //   }
-  //   dispatch(fetchMailBox())
-  // },[mailboxData,dispatch])
+  useEffect(()=>{
+    if(initailFetch){
+      initailFetch=false;
+      return;
+    }
+    if(isChanged){
+    dispatch(fetchMailBox(newmail))
+
+    }
+  },[mailboxData,dispatch])
   
  
 

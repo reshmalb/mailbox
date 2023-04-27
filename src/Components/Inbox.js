@@ -28,13 +28,11 @@ function Inbox() {
   if (selectedEmail) { 
         const updatedMail={                   
                   ...selectedEmail,
-                  isRead:true,
-                    
-                     }
+                  isRead:true,                    
+                }
                      
-       console.log("updatedmail",updatedMail);
-
-     dispatch( updateReadEmails(selectedEmail.id,email,updatedMail))
+      console.log("updatedmail",updatedMail);
+      dispatch( updateReadEmails(selectedEmail.id,email,updatedMail))
     return (
       <div style={{  marginTop: '5rem'}}>
         <button onClick={handleBackClick}>Back to list</button>
@@ -52,7 +50,18 @@ function Inbox() {
         <ListGroup.Item key={email.id} action onClick={() => handleEmailClick(email)}>
           {!email.isRead && <>
           <div className="d-flex w-100 justify-content-between" style={{fontWeight:"bold"}}>
-           <p className="mb-1">{email.subject}</p>
+          <Badge pill variant="danger"
+           style={{ position: 'absolute', 
+           top: '0px', 
+           margin:0,
+           padding:0,
+          
+            width: '8px', 
+            height: '8px',
+             fontSize: '0.3rem',
+             color:"blue" }}>.
+          
+        </Badge> <p className="mb-1">{email.subject}</p>
            <p className="mb-1" style={{fontWeight:"bold"}}>{email.content.slice(0, 50)}...</p>
              <small className='mb-1'>{email.date}</small> 
              <small className='mb-1'>{email.time}</small> 

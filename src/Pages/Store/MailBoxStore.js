@@ -10,10 +10,12 @@ const mailBoxSlice=createSlice({
                 drafts: []
               },
               unreadEmails:0,
+              isChange:false,
              //inbox,sentItems,Drafts
     },
     reducers:{
                 sentMail(state,action){
+                     state.isChange=true;
                      const newMailItem=action.payload;
                      state.emailId=localStorage.getItem('email')
                      state.mailBox.sentItems.push(newMailItem);                 
@@ -35,6 +37,7 @@ const mailBoxSlice=createSlice({
                    console.log("mailbox inside dataactions",state.mailBox.inbox,state.mailBox.unreadEmails)
                },
                updateReadMails(state,action){
+                  state.isChange=true;
                   const existitem=state.mailBox.inbox.find((item)=> item.id===action.payload.id);
                   existitem.inbox[action.payload.id].isRead=true;
 
