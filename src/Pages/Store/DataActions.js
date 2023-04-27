@@ -98,7 +98,9 @@ export const  loginRequest=(user)=>{
                           const sentData={
                                    sentTo:email,
                                    subject:newMail.subject,
-                                   content:newMail.content
+                                   content:newMail.content,
+                                   date:newMail.date,
+                                   time:newMail.time
                           }         
                          const sentresponse=await axios.post(
                                 `https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${sender}/sentitems.json`,
@@ -238,4 +240,45 @@ export const deleteData=(id,email)=>{
           
             
         }
+        export const deleteSentItems=(id,email)=>{
+            const sender=email.replaceAll('.','')
+            console.log(sender);
+              return async(dispatch)=>{
+                  console.log("inside return")
+                const deleteEmail=async()=>{
+                  console.log("inside deletemaiil")
+  
+                      try {
+                          const response=await axios.delete(`https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${sender}/sentItems/${id}.json`);
+                          if(!response.status===200){
+                              throw new Error("Deletion failed")
+                            
+                          }
+                          else{
+                              alert("email deleted successfully")
+                              return response;
+                          }
+                         
+                        } catch (error) {
+                          console.log(error.message);
+                        }
+                      }
+                        try{
+                          const responseData=await deleteEmail();
+                          console.log("responseData",responseData.data)
+                           dispatch(mailBoxAction.deleteSentEmails(id))
+    
+                        }catch(error){
+                          console.log("error in dispatch actions")
+                        }
+                       
+                  
+                 
+  
+              }
+            
+              
+          }
+          
+  
         

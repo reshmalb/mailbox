@@ -61,7 +61,15 @@ const mailBoxSlice=createSlice({
                   return accumulator;
                 }, 0);
               state.unreadEmails=count;
+               }, 
+               deleteSentEmails(state,action){
+                state.isChange=true;
+                console.log("mailstore")
+                state.mailBox.sentItems=state.mailBox.sentItems.filter((item)=>item.id!==action.payload);
+               
+                  
                }
+             
              
 
     }
