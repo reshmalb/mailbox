@@ -1,0 +1,32 @@
+.wrapper-class {
+    height: 300px; /* increase the height of the editor */
+    margin-bottom: 10px; /* add some space between the editor and buttons */
+  }
+  
+  .editor-class {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 100%;
+  }
+  
+  .toolbar-class {
+    margin-bottom: 10px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .send-button {
+    background-color: rgb(92, 58, 231);
+    border: none;
+    margin-right: 10px;
+  }
+  
+  .cancel-button {
+    background-color: red;
+    border: none;
+  }
+  

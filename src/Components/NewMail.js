@@ -5,6 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { useSelector,useDispatch } from 'react-redux';
 import { sendMailData } from '../Pages/Store/DataActions';
+import './NewMail.css'
 
 const NewMail = ({ onClose }) => {
   const sender=useSelector((state)=>state.author.email)  
@@ -73,7 +74,7 @@ const NewMail = ({ onClose }) => {
           }}
         > 
           
-        <Form>
+        <Form style={{background:"white"}}>
         <Form.Group controlId="sentTo">
           <Form.Label>Sent To</Form.Label>
           <Form.Control type="email"
@@ -88,8 +89,7 @@ const NewMail = ({ onClose }) => {
            value={subject}  
            onChange={subjectHandler}/>
         </Form.Group>
-      </Form>
-          <Editor editorState={editorState} 
+        <Editor editorState={editorState} 
           toolbar={{
             options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'image', 'remove', 'history'],
             inline: { inDropdown: true },
@@ -99,14 +99,20 @@ const NewMail = ({ onClose }) => {
           }}
        
           onEditorStateChange={handleEditorChange}
+          wrapperClassName="wrapper-class"
+          editorClassName="editor-class"
+          toolbarClassName="toolbar-class"
         
            />
-        
-          <Button onClick={onClose}>Cancel</Button>
-          <Button   onClick={submitHandler}>Send</Button>
-          
-        </div>
+       
+      </Form>   
+      <div className="button-group">
+        <Button className="send-button" onClick={submitHandler}>Send</Button>
+        <Button className="cancel-button" onClick={onClose}>Cancel</Button>
+      </div>          
+   </div>
       )}
+            
       </OverlayTrigger>
 
   );
