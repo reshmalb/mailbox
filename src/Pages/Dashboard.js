@@ -40,7 +40,13 @@ function Dashboard() {
       return;
     }
     if(isChanged){
-    dispatch(fetchMailBox(newmail))
+
+      const interval = setInterval(() => {
+        dispatch(fetchMailBox(newmail));
+      }, 2000);
+    
+      return () => clearInterval(interval);
+   
 
     }
   },[mailboxData,dispatch])
