@@ -31,10 +31,18 @@ const NewMail = ({ onClose }) => {
   }
  
   const submitHandler=()=>{
+    const currentDate = new Date();
+     const formattedDate = `${currentDate.toLocaleDateString()}`
+      const formattedTime=` ${currentDate.toLocaleTimeString()}`;
+ 
+
     const mail={
           sentFrom:sender,
           subject:subject,
           content:content,
+          isRead:false,
+          date:formattedDate,
+          time:formattedTime,
     }
    
     dispatch(sendMailData(mail,email))

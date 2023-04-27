@@ -8,7 +8,8 @@ const mailBoxSlice=createSlice({
                 inbox: [],
                 sentItems: [],
                 drafts: []
-              }
+              },
+              unreadEmails:0,
              //inbox,sentItems,Drafts
     },
     reducers:{
@@ -23,7 +24,20 @@ const mailBoxSlice=createSlice({
                     state.mailBox.inbox = action.payload.inbox || [];
                     state.mailBox.sentItems = action.payload.sentItems || [];
                     state.mailBox.drafts = action.payload.drafts || [];
-                console.log("mailbox inside dataactions",state.mailBox.inbox,state.mailBox.sentItems,state.mailBox.drafts)
+                    const count = state.mailBox.inbox.reduce((accumulator, currentValue) => {
+                        if (currentValue.isRead === false) {
+                          return accumulator + 1;
+                        }
+                        return accumulator;
+                      }, 0);
+                      console.log("count",count);
+                    state.unreadEmails=count;
+                   console.log("mailbox inside dataactions",state.mailBox.inbox,state.mailBox.unreadEmails)
+               },
+               updateReadMails(state,action){
+                  const existitem=state.mailBox.inbox.find((item)=> item.id===action.payload.id);
+                  existitem.inbox[action.payload.id].isRead=true;
+
                },
              
 

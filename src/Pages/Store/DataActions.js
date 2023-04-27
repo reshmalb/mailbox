@@ -165,6 +165,39 @@ export const  loginRequest=(user)=>{
             }
            
         }
+
+   export const updateReadEmails=(id,email,updatedMail)=>{
+    const sender=email.replaceAll('.','')
+       return async(dispatch)=>{
+               const updateRead=async()=>{
+                    try{
+                        const response=await axios.put(
+                            `https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${sender}/inbox/${id}.json`,updatedMail);                           
+
+                       if(!response.status===200){
+                        throw new Error('Failed in updatedReadMails')
+                       }
+                      else
+                      return response;
+
+                    }catch(error){
+                        console.log(error.message)
+
+                    }
+               }
+               try{
+                const responseData=await updateRead();
+                dispatch()
+
+
+               }catch(error){
+                console.log("errorn in dispatch action of updated read mails");
+               }
+       }
+        
+
+         }
+       
       
         export const deleteData=(id)=>{
             return async()=>{

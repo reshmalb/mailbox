@@ -16,6 +16,8 @@ function Dashboard() {
   const [isInbox,setInbox]=useState(false)
   const  [isSentItems,setSentItems]=useState(false);
   const  [isDrafs,setDrafts]=useState(false);
+  const unread=useSelector((state)=>state.mailbox.unreadEmails)
+
 
 
 
@@ -105,7 +107,7 @@ function Dashboard() {
               </ListGroup.Item>
               <ListGroup.Item action variant="light" onClick={inboxHandler}>
                 Inbox
-                <span className="justify-content-end">10</span>
+                <span className="justify-content-end" style={{color:"red"}}>{unread>0 ?`(unread${"  "}${unread})`:'no new mails'}</span>
               </ListGroup.Item>
               <ListGroup.Item action variant="light" onClick={sentItemsHandler}>
                 Sent
