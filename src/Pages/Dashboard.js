@@ -12,21 +12,23 @@ import Drafts from '../Components/Drafts';
 let initailFetch=true;
 
 function Dashboard() {
-  const [isComposeMail,setComposeMail]=useState(false);
   const [isInbox,setInbox]=useState(false)
   const  [isSentItems,setSentItems]=useState(false);
   const  [isDrafs,setDrafts]=useState(false);
   const unread=useSelector((state)=>state.mailbox.unreadEmails)
   const isChanged=useSelector((state)=>state.mailbox.isChange)
+  const [mail,setMail]=useState([]);
+  const [read,setRead]=useState();
+  
 
 
 
-
-  const mailboxData=useSelector((state)=>state.mailbox.mailbBox)
+  const mailboxData=useSelector((state)=>state.mailbox.mailBox)
   const dispatch=useDispatch();
   const email=useSelector((state)=>state.author.email)
   const newmail=email.replaceAll('.','')
   const [showOverlay, setShowOverlay] = useState(false);
+
   useEffect(()=>{
    
     dispatch(fetchMailBox(newmail));
@@ -51,7 +53,6 @@ function Dashboard() {
     }
   },[mailboxData,dispatch])
   
- 
 
 
   const composeMailHandler=()=>{
@@ -117,7 +118,7 @@ function Dashboard() {
               </ListGroup.Item>
               <ListGroup.Item action variant="light" onClick={inboxHandler}>
                 Inbox
-                <span className="justify-content-end" style={{color:"red"}}>{unread>0 ?`(unread${"  "}${unread})`:'no new mails'}</span>
+                <span className="justify-content-end" style={{color:"red"}}>{unread>0 ?`(unread${"  "}${unread})`:'(no new mails)'}</span>
               </ListGroup.Item>
               <ListGroup.Item action variant="light" onClick={sentItemsHandler}>
                 Sent
