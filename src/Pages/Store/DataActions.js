@@ -116,10 +116,8 @@ export const  loginRequest=(user)=>{
 
 
                        }
-                       console.log("rcvd responses after sending mail")
                      
                        
-            console.log("updating sentitems")
                      
                    }catch(error){
                     alert("error ")
@@ -175,12 +173,14 @@ export const  loginRequest=(user)=>{
                         const response=await axios.put(
                             `https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${sender}/inbox/${id}.json`,updatedMail);                           
 
+
                        if(!response.status===200){
                         throw new Error('Failed in updatedReadMails')
                        }
-                      else
-                      return response;
+                      else{
+                        return response;
 
+                      }
                     }catch(error){
                         console.log(error.message)
 
@@ -188,11 +188,10 @@ export const  loginRequest=(user)=>{
                }
                try{
                 const responseData=await updateRead();
-                dispatch()
-
+                dispatch(mailBoxAction.updateReadMails(updatedMail))
 
                }catch(error){
-                console.log("errorn in dispatch action of updated read mails");
+                console.log("error in dispatch action of updated read mails");
                }
        }
         
@@ -200,17 +199,40 @@ export const  loginRequest=(user)=>{
          }
        
       
-        export const deleteData=(id)=>{
-            return async()=>{
-                try {
-                    const response=await axios.delete(`https://fir-login-aea12-default-rtdb.firebaseio.com/expenses/${id}.json`);
-                    if(response.status===200){
-                       alert("Data deleted successfully")
+export const deleteData=(id,email)=>{
+          const sender=email.replaceAll('.','')
+          console.log(sender);
+            return async(dispatch)=>{
+                console.log("inside return")
+              const deleteEmail=async()=>{
+                console.log("inside deletemaiil")
+
+                    try {
+                        const response=await axios.delete(`https://fir-login-aea12-default-rtdb.firebaseio.com/mailbox/${sender}/inbox/${id}.json`);
+                        if(!response.status===200){
+                            throw new Error("Deletion failed")
+                          
+                        }
+                        else{
+                            alert("email deleted successfully")
+                            return response;
+                        }
+                       
+                      } catch (error) {
+                        console.log(error.message);
+                      }
                     }
-                   
-                  } catch (error) {
-                    console.log(error);
-                  }
+                      try{
+                        const responseData=await deleteEmail();
+                        console.log("responseData",responseData.data)
+                         dispatch(mailBoxAction.deleteEmails(id))
+  
+                      }catch(error){
+                        console.log("error in dispatch actions")
+                      }
+                     
+                
+               
 
             }
           

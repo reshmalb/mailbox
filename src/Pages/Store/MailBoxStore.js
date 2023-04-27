@@ -32,16 +32,36 @@ const mailBoxSlice=createSlice({
                         }
                         return accumulator;
                       }, 0);
-                      console.log("count",count);
                     state.unreadEmails=count;
-                   console.log("mailbox inside dataactions",state.mailBox.inbox,state.mailBox.unreadEmails)
                },
                updateReadMails(state,action){
                   state.isChange=true;
                   const existitem=state.mailBox.inbox.find((item)=> item.id===action.payload.id);
-                  existitem.inbox[action.payload.id].isRead=true;
+                 
+                  if(existitem){
+                    existitem.isRead=action.payload.isRead;
+                  }
+                     const count = state.mailBox.inbox.reduce((accumulator, currentValue) => {
+                        if (currentValue.isRead === false) {
+                          return accumulator + 1;
+                        }
+                        return accumulator;
+                      }, 0);
+                    state.unreadEmails=count;
 
                },
+               deleteEmails(state,action){
+                state.isChange=true;
+                console.log("mailstore")
+                state.mailBox.inbox=state.mailBox.inbox.filter((item)=>item.id!==action.payload);
+                const count = state.mailBox.inbox.reduce((accumulator, currentValue) => {
+                  if (currentValue.isRead === false) {
+                    return accumulator + 1;
+                  }
+                  return accumulator;
+                }, 0);
+              state.unreadEmails=count;
+               }
              
 
     }

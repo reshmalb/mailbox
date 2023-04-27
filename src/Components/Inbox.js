@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useSelector,useDispatch } from 'react-redux';
-import { updateReadEmails } from '../Pages/Store/DataActions';
+import { deleteData, updateReadEmails } from '../Pages/Store/DataActions';
 
 import {Badge, OverlayTrigger,Tooltip }from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 function Inbox() {
   const emails=useSelector((state)=>state.mailbox.mailBox)
@@ -24,21 +25,32 @@ function Inbox() {
   function handleBackClick() {
     setSelectedEmail(null);
   }
+  const deleteEmailHandler=(id,event)=>{
+    event.stopPropagation();
+    console.log("id",id);
+    dispatch(deleteData(id,email))
+
+  }
 
   if (selectedEmail) { 
+       if(selectedEmail.isRead===false){
         const updatedMail={                   
-                  ...selectedEmail,
-                  isRead:true,                    
-                }
+          ...selectedEmail,
+          isRead:true,                    
+        }
+        console.log("updatedmail",updatedMail);
+        dispatch( updateReadEmails(selectedEmail.id,email,updatedMail))
+
+       }
+      
                      
-      console.log("updatedmail",updatedMail);
-      dispatch( updateReadEmails(selectedEmail.id,email,updatedMail))
+    
     return (
       <div style={{  marginTop: '5rem'}}>
         <button onClick={handleBackClick}>Back to list</button>
         <h2>{selectedEmail.subject}</h2>
         <p>From: {selectedEmail.sentFrom}</p>
-        {/* <p>Date: {selectedEmail.date}</p> */}
+        <p>Date: {selectedEmail.date}</p>
         <p>{selectedEmail.content}</p>
       </div>
     );
@@ -65,6 +77,7 @@ function Inbox() {
            <p className="mb-1" style={{fontWeight:"bold"}}>{email.content.slice(0, 50)}...</p>
              <small className='mb-1'>{email.date}</small> 
              <small className='mb-1'>{email.time}</small> 
+
              
              </div>
          
@@ -79,13 +92,16 @@ function Inbox() {
            <p className="mb-1">{email.content.slice(0, 50)}...</p>
              <small className='mb-1'>{email.date}</small> 
              <small className='mb-1'>{email.time}</small> 
+           
              </div>
          
          
          
-          
           <small >{email.sentFrom}</small>
           </>}
+          <Button className="d-flex w-100 justify-content-between" variant="danger" size="sm" onClick={(event)=> deleteEmailHandler(email.id, event)}>Delete</Button>
+
+         
         </ListGroup.Item>
       ))}
     </ListGroup>
